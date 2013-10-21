@@ -224,6 +224,11 @@ public class ScoreService {
 				addScore = new BigDecimal(map.get("base"));
 			}
 			break;
+		case 10://如意彩竞猜
+			if (giveScore != null) {
+				addScore = giveScore;
+			}
+			break;
 		case 99:// 赠送积分
 			if (giveScore != null) {
 				addScore = giveScore;
