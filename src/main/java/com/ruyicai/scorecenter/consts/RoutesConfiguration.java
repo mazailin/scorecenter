@@ -30,7 +30,7 @@ public class RoutesConfiguration {
 						"bean:caselotFinishListener?method=caselotFinishCustomer").routeId("合买期截计算积分");
 				/*from("jms:queue:VirtualTopicConsumers.scorecenter.actioncenter").to(
 						"bean:fundJmsListener?method=fundJmsCustomer").routeId("用户充值计算积分");*/
-				from("jms:queue:VirtualTopicConsumers.scorecenter.quizAward").to(
+				from("jms:queue:VirtualTopicConsumers.scorecenter.quizAward?concurrentConsumers=10").to(
 						"bean:quizAwardListener?method=quizAwardConsumer").routeId("如意彩竞猜奖励积分");
 			}
 		});
