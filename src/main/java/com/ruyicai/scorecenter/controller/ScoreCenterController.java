@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ruyicai.scorecenter.controller.dto.TransScoreDTO;
+import com.ruyicai.scorecenter.dao.TuserinfoScoreDao;
 import com.ruyicai.scorecenter.domain.ScoreType;
 import com.ruyicai.scorecenter.domain.TuserinfoScore;
 import com.ruyicai.scorecenter.domain.TuserinfoScoreDetail;
@@ -29,6 +30,9 @@ public class ScoreCenterController {
 
 	@Autowired
 	private ScoreService scoreService;
+
+	@Autowired
+	private TuserinfoScoreDao tuserinfoScoreDao;
 
 	/**
 	 * 增加用户积分
@@ -59,7 +63,8 @@ public class ScoreCenterController {
 			@RequestParam(value = "memo", required = false) String memo) {
 		ResponseData rd = new ResponseData();
 		ErrorCode result = ErrorCode.OK;
-		logger.info("/addTuserinfoScore userno:{},scoreType:{}", new String[] { userno, scoreType + "" });
+		logger.info("/addTuserinfoScore userno:{},scoreType:{},bussinessId:{},memo:{}", new String[] { userno,
+				scoreType + "", bussinessId, memo });
 		try {
 			Boolean flag = scoreService.addTuserinfoScore(userno, bussinessId, scoreType, buyAmt, totalAmt, giveScore,
 					memo);
@@ -90,7 +95,7 @@ public class ScoreCenterController {
 		ErrorCode result = ErrorCode.OK;
 		logger.info("/findScoreByUserno userno:" + userno);
 		try {
-			TuserinfoScore tuserinfoScore = TuserinfoScore.findScoreIfNotExist(userno);
+			TuserinfoScore tuserinfoScore = tuserinfoScoreDao.findScoreIfNotExist(userno);
 			rd.setValue(tuserinfoScore);
 		} catch (RuyicaiException e) {
 			logger.error("查询用户积分异常,userno:{}", new String[] { userno }, e);
@@ -163,7 +168,7 @@ public class ScoreCenterController {
 	public @ResponseBody
 	ResponseData transScore2Money(@RequestParam("userno") String userno, @RequestParam(value = "score") Integer score) {
 		ResponseData rd = new ResponseData();
-		logger.info("积分兑换彩金userno:{},score:{}",new String[]{userno,score+""});
+		logger.info("积分兑换彩金userno:{},score:{}", new String[] { userno, score + "" });
 		ErrorCode result = ErrorCode.OK;
 		try {
 			TransScoreDTO transScoreDTO = scoreService.transScore2Money(userno, score);

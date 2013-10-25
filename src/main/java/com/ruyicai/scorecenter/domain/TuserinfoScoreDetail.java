@@ -92,7 +92,7 @@ public class TuserinfoScoreDetail implements Serializable {
 
 	public static void findTuserinfoScoreDetailByPage(String userno, Map<String, Object> conditionMap,
 			Page<TuserinfoScoreDetail> page, Boolean flag) {
-		EntityManager em = TuserinfoScore.entityManager();
+		EntityManager em = TuserinfoScoreDetail.entityManager();
 		String sql = "SELECT o FROM TuserinfoScoreDetail o ";
 		String countSql = "SELECT count(*) FROM TuserinfoScoreDetail o ";
 		String sumSql = "SELECT sum(o.score) FROM TuserinfoScoreDetail o ";

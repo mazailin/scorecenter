@@ -5,8 +5,8 @@ package com.ruyicai.scorecenter.domain;
 
 import org.springframework.beans.factory.annotation.Configurable;
 
-privileged aspect TuserinfoScore_Roo_Configurable {
+privileged aspect TjmsservicePK_Roo_Configurable {
     
-    declare @type: TuserinfoScore: @Configurable;
+    declare @type: TjmsservicePK: @Configurable;
     
 }

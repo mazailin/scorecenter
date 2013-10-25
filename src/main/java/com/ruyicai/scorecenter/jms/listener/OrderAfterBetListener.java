@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ruyicai.lottery.domain.Torder;
 import com.ruyicai.scorecenter.service.ScoreService;
+import com.ruyicai.scorecenter.service.TjmsserviceService;
 
 @Service
 public class OrderAfterBetListener {
@@ -18,18 +19,23 @@ public class OrderAfterBetListener {
 	@Autowired
 	private ScoreService scoreService;
 
+	@Autowired
+	private TjmsserviceService tjmsserviceService;
+
 	public void orderAfterBetCustomer(@Body String orderJson) {
 		Torder torder = Torder.fromJsonToTorder(orderJson);
 		if (torder != null) {
 			if (StringUtils.isBlank(torder.getTlotcaseid())) {
-				if (StringUtils.isBlank(torder.getTsubscribeflowno())) {
-					logger.info("普通投注计算积分,orderJson:" + orderJson);
-					scoreService.addTuserinfoScore(torder.getBuyuserno(), torder.getId(), 2, torder.getAmt(), null,
-							null, null);
-				} else {
-					logger.info("追号投注计算积分,orderJson:" + orderJson);
-					scoreService.addTuserinfoScore(torder.getUserno(), torder.getId(), 3, torder.getAmt(), null, null,
-							null);
+				if (tjmsserviceService.createTjmsservice(torder.getId(), "2", "投注积分")) {
+					if (StringUtils.isBlank(torder.getTsubscribeflowno())) {
+						logger.info("普通投注计算积分,orderJson:" + orderJson);
+						scoreService.addTuserinfoScore(torder.getBuyuserno(), torder.getId(), 2, torder.getAmt(), null,
+								null, null);
+					} else {
+						logger.info("追号投注计算积分,orderJson:" + orderJson);
+						scoreService.addTuserinfoScore(torder.getUserno(), torder.getId(), 3, torder.getAmt(), null,
+								null, null);
+					}
 				}
 			}
 		}

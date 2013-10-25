@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ruyicai.lottery.domain.Tuserinfo;
 import com.ruyicai.scorecenter.controller.dto.TransScoreDTO;
+import com.ruyicai.scorecenter.dao.TuserinfoScoreDao;
 import com.ruyicai.scorecenter.domain.ScoreType;
 import com.ruyicai.scorecenter.domain.TuserinfoScore;
 import com.ruyicai.scorecenter.domain.TuserinfoScoreDetail;
@@ -27,6 +28,9 @@ public class ScoreService {
 
 	@Autowired
 	private LotteryService lotteryService;
+
+	@Autowired
+	private TuserinfoScoreDao tuserinfoScoreDao;
 
 	/**
 	 * 增加用户积分
@@ -51,11 +55,19 @@ public class ScoreService {
 		logger.info("增加用户积分userno:{},bussinessId:{},scoreType:{},buyAmt:{},totalAmt:{},giveScore:{}", new String[] {
 				userno, bussinessId, scoreType + "", buyAmt + "", totalAmt + "", giveScore + "" });
 		Boolean flag = false;
+		Tuserinfo tuserinfo = lotteryService.findTuserinfoByUserno(userno);
+		if (tuserinfo != null && tuserinfo.getChannel() != null) {
+			if (tuserinfo.getChannel().equals("991")) {
+				logger.info("如意彩大户渠道不增加积分userno:" + userno);
+				return flag;
+			}
+		}
 		ScoreType type = ScoreType.findScoreTypeFromCache(scoreType);
 		Integer times = type.getTimes();
 		if (type != null && type.getState() == 1) {
 			if (type.getTimes() != null) {
 				Integer count = TuserinfoScoreDetail.findCountByTime(userno, new Date(), scoreType);
+				logger.info("积分增加次数count:" + count + ",userno:" + userno);
 				if (times <= count) {
 					logger.info("用户userno:{}参加{}已达到{}次，不再增加积分", new String[] { userno, type.getMemo(), count + "" });
 					return flag;
@@ -71,7 +83,7 @@ public class ScoreService {
 			BigDecimal addScore = computeScore(userno, bussinessId, scoreType, buyAmt, totalAmt, giveScore, type);
 			if (addScore.compareTo(BigDecimal.ZERO) > 0) {
 				flag = true;
-				TuserinfoScore tuserinfoScore = TuserinfoScore.addScore(userno, addScore);
+				TuserinfoScore tuserinfoScore = tuserinfoScoreDao.addScore(userno, addScore);
 				TuserinfoScoreDetail detail = TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, bussinessId,
 						addScore, scoreType, tuserinfoScore.getScore(), memo);
 				logger.info("增加积分,userno:{},addScore:{},scoreType:{},bussinessId:{},tuserinfoScoreDetailId:{}",
@@ -118,7 +130,7 @@ public class ScoreService {
 						throw new RuyicaiException(ErrorCode.ScoreCenter_Tran2MoneyLotmulti_Error);
 					}
 					BigDecimal money = new BigDecimal(score).divide(base).multiply(new BigDecimal(100));
-					TuserinfoScore deductScore = TuserinfoScore.deductScore(userno, new BigDecimal(score));
+					TuserinfoScore deductScore = tuserinfoScoreDao.deductScore(userno, new BigDecimal(score));
 					TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, null, new BigDecimal(score), -1,
 							deductScore.getScore(), "积分换彩金");
 					Boolean directChargeProcess = lotteryService.directChargeProcess(userno, money,

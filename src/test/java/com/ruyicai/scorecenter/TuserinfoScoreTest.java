@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ruyicai.scorecenter.controller.dto.TransScoreDTO;
+import com.ruyicai.scorecenter.dao.TuserinfoScoreDao;
 import com.ruyicai.scorecenter.domain.ScoreType;
 import com.ruyicai.scorecenter.domain.TuserinfoScore;
 import com.ruyicai.scorecenter.domain.TuserinfoScoreDetail;
@@ -34,6 +35,9 @@ public class TuserinfoScoreTest {
 
 	@Autowired
 	private CaselotFinishListener caselotBetFullListener;
+
+	@Autowired
+	private TuserinfoScoreDao tuserinfoScoreDao;
 
 	@Test
 	public void testCreateScoreType() {
@@ -93,34 +97,34 @@ public class TuserinfoScoreTest {
 
 	@Test
 	public void testAddScore() {
-		TuserinfoScore addScore1 = TuserinfoScore.addScore("123456", new BigDecimal(1000));
+		TuserinfoScore addScore1 = tuserinfoScoreDao.addScore("123456", new BigDecimal(1000));
 		TuserinfoScoreDetail.createTuserinfoScoreDetail("123456", null, new BigDecimal(1000), 1, addScore1.getScore(),
 				null);
-		TuserinfoScore addScore2 = TuserinfoScore.addScore("123456", new BigDecimal(2000));
+		TuserinfoScore addScore2 = tuserinfoScoreDao.addScore("123456", new BigDecimal(2000));
 		TuserinfoScoreDetail.createTuserinfoScoreDetail("123456", null, new BigDecimal(2000), 2, addScore2.getScore(),
 				null);
-		TuserinfoScore addScore3 = TuserinfoScore.addScore("123456", new BigDecimal(3000));
+		TuserinfoScore addScore3 = tuserinfoScoreDao.addScore("123456", new BigDecimal(3000));
 		TuserinfoScoreDetail.createTuserinfoScoreDetail("123456", null, new BigDecimal(3000), 3, addScore3.getScore(),
 				null);
 	}
 
 	@Test
 	public void testscoreService() {
-		TuserinfoScore score = TuserinfoScore.findTuserinfoScore("00000035");
+		TuserinfoScore score = tuserinfoScoreDao.findTuserinfoScore("00000035", false);
 		scoreService.addTuserinfoScore("00000035", null, 99, null, null, new BigDecimal(10000), null);
-		TuserinfoScore score2 = TuserinfoScore.findTuserinfoScore("00000035");
+		TuserinfoScore score2 = tuserinfoScoreDao.findTuserinfoScore("00000035", false);
 		Assert.assertTrue(score.getScore().add(new BigDecimal(10000)).compareTo(score2.getScore()) == 0);
 		scoreService.transScore2Money("00000035", 10000);
-		TuserinfoScore score3 = TuserinfoScore.findTuserinfoScore("00000035");
+		TuserinfoScore score3 = tuserinfoScoreDao.findTuserinfoScore("00000035", false);
 		Assert.assertTrue(score2.getScore().subtract(new BigDecimal(10000)).compareTo(score3.getScore()) == 0);
 	}
 
 	@Test
 	public void testscoreService2() {
-		TuserinfoScore score = TuserinfoScore.findScoreIfNotExist("00011337");
+		TuserinfoScore score = tuserinfoScoreDao.findScoreIfNotExist("00011337");
 		System.out.println(score.toString());
 		scoreService.addTuserinfoScore("00001337", null, 8, null, null, null, null);
-		TuserinfoScore score2 = TuserinfoScore.findScoreIfNotExist("00011337");
+		TuserinfoScore score2 = tuserinfoScoreDao.findScoreIfNotExist("00011337");
 		System.out.println(score2.toString());
 	}
 
