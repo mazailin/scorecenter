@@ -18,6 +18,7 @@ import com.ruyicai.scorecenter.domain.ScoreType;
 import com.ruyicai.scorecenter.domain.TuserinfoScore;
 import com.ruyicai.scorecenter.domain.TuserinfoScoreDetail;
 import com.ruyicai.scorecenter.exception.RuyicaiException;
+import com.ruyicai.scorecenter.util.DateUtil;
 import com.ruyicai.scorecenter.util.ErrorCode;
 import com.ruyicai.scorecenter.util.JsonUtil;
 
@@ -31,6 +32,9 @@ public class ScoreService {
 
 	@Autowired
 	private TuserinfoScoreDao tuserinfoScoreDao;
+
+	@Autowired
+	private TjmsserviceService tjmsserviceService;
 
 	/**
 	 * 增加用户积分
@@ -65,18 +69,28 @@ public class ScoreService {
 		ScoreType type = ScoreType.findScoreTypeFromCache(scoreType);
 		Integer times = type.getTimes();
 		if (type != null && type.getState() == 1) {
-			if (type.getTimes() != null) {
-				Integer count = TuserinfoScoreDetail.findCountByTime(userno, new Date(), scoreType);
-				logger.info("积分增加次数count:" + count + ",userno:" + userno);
-				if (times <= count) {
-					logger.info("用户userno:{}参加{}已达到{}次，不再增加积分", new String[] { userno, type.getMemo(), count + "" });
-					return flag;
+			if (times != null) {
+				if (times == 1) {
+					boolean exist = tjmsserviceService.createTjmsservice(
+							userno + DateUtil.format("yyyyMMdd", new Date()), scoreType + "", type.getMemo());
+					if (exist) {
+						logger.info("用户userno:{}已参加{}不再增加积分", new String[] { userno, type.getMemo() });
+						return flag;
+					}
+				} else {
+					Integer count = TuserinfoScoreDetail.findCountByTime(userno, new Date(), scoreType);
+					logger.info("积分增加次数count:" + count + ",userno:" + userno);
+					if (times <= count) {
+						logger.info("用户userno:{}参加{}已达到{}次不再增加积分", new String[] { userno, type.getMemo(), count + "" });
+						return flag;
+					}
 				}
 			}
 			if (scoreType == 1) {
-				Integer count = TuserinfoScoreDetail.findCount(userno, scoreType);
-				if (count > 0) {
-					logger.info("用户userno:{}参加{}已达到{}次，不再增加积分", new String[] { userno, type.getMemo(), count + "" });
+				boolean exist = tjmsserviceService
+						.createTjmsservice(userno + scoreType, scoreType + "", type.getMemo());
+				if (exist) {
+					logger.info("用户userno:{}已参加{}不再增加积分", new String[] { userno, type.getMemo() });
 					return flag;
 				}
 			}
@@ -236,7 +250,7 @@ public class ScoreService {
 				addScore = new BigDecimal(map.get("base"));
 			}
 			break;
-		case 10://如意彩竞猜
+		case 10:// 如意彩竞猜
 			if (giveScore != null) {
 				addScore = giveScore;
 			}
