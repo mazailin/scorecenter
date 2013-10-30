@@ -121,11 +121,8 @@ public class TuserinfoScoreTest {
 
 	@Test
 	public void testscoreService2() {
-		TuserinfoScore score = tuserinfoScoreDao.findScoreIfNotExist("00011337");
+		TuserinfoScore score = tuserinfoScoreDao.findScoreIfNotExist("00111337");
 		System.out.println(score.toString());
-		scoreService.addTuserinfoScore("00001337", null, 8, null, null, null, null);
-		TuserinfoScore score2 = tuserinfoScoreDao.findScoreIfNotExist("00011337");
-		System.out.println(score2.toString());
 	}
 
 	@Test
