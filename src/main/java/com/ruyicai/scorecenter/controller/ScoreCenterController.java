@@ -18,6 +18,7 @@ import com.ruyicai.scorecenter.domain.ScoreType;
 import com.ruyicai.scorecenter.domain.TuserinfoScore;
 import com.ruyicai.scorecenter.domain.TuserinfoScoreDetail;
 import com.ruyicai.scorecenter.exception.RuyicaiException;
+import com.ruyicai.scorecenter.service.AsyncService;
 import com.ruyicai.scorecenter.service.ScoreService;
 import com.ruyicai.scorecenter.util.ErrorCode;
 import com.ruyicai.scorecenter.util.JsonUtil;
@@ -30,6 +31,9 @@ public class ScoreCenterController {
 
 	@Autowired
 	private ScoreService scoreService;
+
+	@Autowired
+	private AsyncService asyncService;
 
 	@Autowired
 	private TuserinfoScoreDao tuserinfoScoreDao;
@@ -66,9 +70,8 @@ public class ScoreCenterController {
 		logger.info("/addTuserinfoScore userno:{},scoreType:{},bussinessId:{},memo:{}", new String[] { userno,
 				scoreType + "", bussinessId, memo });
 		try {
-			Boolean flag = scoreService.addTuserinfoScore(userno, bussinessId, scoreType, buyAmt, totalAmt, giveScore,
-					memo);
-			rd.setValue(flag);
+			asyncService.addTuserinfoScore(userno, bussinessId, scoreType, buyAmt, totalAmt, giveScore, memo);
+			rd.setValue(true);
 		} catch (RuyicaiException e) {
 			logger.error("增加用户积分异常,userno:{},scoreType:{}", new String[] { userno, scoreType + "" }, e);
 			result = e.getErrorCode();
