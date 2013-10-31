@@ -53,7 +53,6 @@ public class ScoreService {
 	 *            赠送积分
 	 * @return Boolean 是否增加积分
 	 */
-	@Transactional
 	public Boolean addTuserinfoScore(String userno, String bussinessId, Integer scoreType, BigDecimal buyAmt,
 			BigDecimal totalAmt, BigDecimal giveScore, String memo) {
 		logger.info("增加用户积分userno:{},bussinessId:{},scoreType:{},buyAmt:{},totalAmt:{},giveScore:{}", new String[] {
@@ -97,16 +96,22 @@ public class ScoreService {
 			BigDecimal addScore = computeScore(userno, bussinessId, scoreType, buyAmt, totalAmt, giveScore, type);
 			if (addScore.compareTo(BigDecimal.ZERO) > 0) {
 				flag = true;
-				TuserinfoScore tuserinfoScore = tuserinfoScoreDao.addScore(userno, addScore);
-				TuserinfoScoreDetail detail = TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, bussinessId,
-						addScore, scoreType, tuserinfoScore.getScore(), memo);
-				logger.info("增加积分,userno:{},addScore:{},scoreType:{},bussinessId:{},tuserinfoScoreDetailId:{}",
-						new String[] { userno, addScore + "", scoreType + "", bussinessId, detail.getId() + "" });
+				doAddTuserinfoScore(userno, bussinessId, scoreType, memo, addScore);
 			}
 		} else {
 			logger.error("无效积分类型userno:{},scoreType:{},bussinessId:{}");
 		}
 		return flag;
+	}
+
+	@Transactional
+	public void doAddTuserinfoScore(String userno, String bussinessId, Integer scoreType, String memo,
+			BigDecimal addScore) {
+		TuserinfoScore tuserinfoScore = tuserinfoScoreDao.addScore(userno, addScore);
+		TuserinfoScoreDetail detail = TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, bussinessId, addScore,
+				scoreType, tuserinfoScore.getScore(), memo);
+		logger.info("增加积分,userno:{},addScore:{},scoreType:{},bussinessId:{},tuserinfoScoreDetailId:{}", new String[] {
+				userno, addScore + "", scoreType + "", bussinessId, detail.getId() + "" });
 	}
 
 	/**

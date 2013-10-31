@@ -27,7 +27,6 @@ public class CaselotFinishListener {
 	@Autowired
 	private ScoreService scoreService;
 
-	@Transactional
 	public void caselotFinishCustomer(@Body String caseLotJson) {
 		logger.info("合买满员积分 caseLotJson:" + caseLotJson);
 		CaseLot caseLot = CaseLot.fromJsonToCaseLot(caseLotJson);

@@ -85,7 +85,6 @@ public class LotteryService {
 				tuserinfo = Tuserinfo.fromJsonToTuserinfo(userJson);
 			}
 			if (tuserinfo != null) {
-				logger.info("found user from cache,userno:" + userno);
 				return tuserinfo;
 			}
 			logger.info("find user from lottery,userno:" + userno);
