@@ -21,10 +21,12 @@ public class TjmsserviceService {
 			if (tjmsservice == null) {
 				Tjmsservice.createTjmsservice(value, type, new Date(), memo);
 				return true;
+			} else {
+				return false;
 			}
 		} catch (Exception e) {
 			logger.error("数据库已存在记录, value:" + value + ", type:" + type + ", memo:" + memo);
+			return false;
 		}
-		return false;
 	}
 }

@@ -7,11 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ruyicai.scorecenter.domain.TuserinfoScore;
 import com.ruyicai.scorecenter.exception.RuyicaiException;
+import com.ruyicai.scorecenter.service.MemcachedService;
 import com.ruyicai.scorecenter.util.ErrorCode;
 
 @Component
@@ -20,12 +22,28 @@ public class TuserinfoScoreDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	@Autowired
+	private MemcachedService<TuserinfoScore> memcachedService;
+
 	public TuserinfoScore findTuserinfoScore(String id, boolean lock) {
 		return entityManager.find(TuserinfoScore.class, id, lock ? LockModeType.PESSIMISTIC_WRITE : LockModeType.NONE);
 	}
 
 	public TuserinfoScore findTuserinfoScore(String id) {
-		return entityManager.find(TuserinfoScore.class, id);
+		TuserinfoScore tuserinfoScore = findTuserinfoScoreFromCache(id);
+		if (tuserinfoScore != null) {
+			return tuserinfoScore;
+		} else {
+			TuserinfoScore tuserinfoScore2 = entityManager.find(TuserinfoScore.class, id);
+			if (tuserinfoScore2 != null) {
+				memcachedService.set("TuserinfoScore" + id, tuserinfoScore2);
+			}
+			return tuserinfoScore2;
+		}
+	}
+
+	public TuserinfoScore findTuserinfoScoreFromCache(String id) {
+		return memcachedService.get("TuserinfoScore" + id);
 	}
 
 	public TuserinfoScore findScoreIfNotExist(String userno) {
@@ -80,11 +98,13 @@ public class TuserinfoScoreDao {
 	public TuserinfoScore merge(TuserinfoScore tuserinfoScore) {
 		TuserinfoScore merged = this.entityManager.merge(tuserinfoScore);
 		this.entityManager.flush();
+		memcachedService.set("TuserinfoScore" + tuserinfoScore.getUserno(), tuserinfoScore);
 		return merged;
 	}
 
 	@Transactional
 	public void persist(TuserinfoScore tuserinfoScore) {
 		this.entityManager.persist(tuserinfoScore);
+		memcachedService.set("TuserinfoScore" + tuserinfoScore.getUserno(), tuserinfoScore);
 	}
 }

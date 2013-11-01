@@ -16,6 +16,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooJson
 @RooToString
+@org.hibernate.annotations.Entity(dynamicUpdate = true)
 @Entity()
 @Table(name = "TUSERINFOSCORE")
 public class TuserinfoScore implements Serializable {
