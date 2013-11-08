@@ -276,4 +276,42 @@ public class ScoreService {
 		logger.info("计算积分结果:" + addScore);
 		return addScore;
 	}
+	
+	/**
+	 * 如意彩竞猜扣积分
+	 * @param userno
+	 * @param score
+	 * @param quizId
+	 */
+	public void quizDeductScore(String userno, BigDecimal score, Integer quizId) {
+		if(StringUtils.isBlank(userno)) {
+			throw new IllegalArgumentException("The argument userno is required");
+		}
+		if(score == null) {
+			throw new IllegalArgumentException("The argument score is required.");
+		}
+		if(quizId == null) {
+			throw new IllegalArgumentException("The argument quizId is required.");
+		}
+		ScoreType type = ScoreType.findScoreTypeFromCache(-2);
+		if(type != null && type.getState().equals(1)) {
+			Tuserinfo tuserinfo = lotteryService.findTuserinfoByUserno(userno);
+			if (tuserinfo == null) {
+				throw new RuyicaiException(ErrorCode.UserMod_UserNotExists);
+			}
+			TuserinfoScore deductScore = tuserinfoScoreDao.deductScore(userno, score);
+			TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, quizId+"", score, -2,
+					deductScore.getScore(), "");
+		} else {
+			if (type != null) {
+				if (type.getState() != 1) {
+					logger.error("兑换积分未开启userno:{},score:{}", new String[] { userno, score + "" });
+					throw new RuyicaiException(ErrorCode.ScoreCenter_QuizDeductScore_DISABLE);
+				}
+			} else {
+				logger.error("无效积分类型userno:{},score:{}", new String[] { userno, score + "" });
+				throw new RuyicaiException(ErrorCode.ScoreCenter_TYPE_DISABLE);
+			}
+		}
+	}
 }
