@@ -1,7 +1,6 @@
 package com.ruyicai.scorecenter.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 
 import org.apache.commons.lang.StringUtils;
@@ -82,7 +81,7 @@ public class ScoreService {
 				 * logger.info("用户userno:{}参加{}已达到{}次不再增加积分", new String[] {
 				 * userno, type.getMemo(), count + "" }); return flag; } }
 				 */
-				Integer count = TuserinfoScoreDetail.findCountByTime(userno, new Date(), scoreType);
+				Integer count = TuserinfoScoreDetail.findCountByTime(userno, scoreType);
 				logger.info("积分增加次数count:" + count + ",userno:" + userno);
 				if (times <= count) {
 					logger.info("用户userno:{}参加{}已达到{}次不再增加积分", new String[] { userno, type.getMemo(), count + "" });

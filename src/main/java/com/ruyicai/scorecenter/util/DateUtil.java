@@ -6,13 +6,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
-	
+
 	private static Date date_1000 = null;
-	
+
 	static {
 		try {
-			date_1000 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-			.parse("1000-01-01 00:00:00");
+			date_1000 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("1000-01-01 00:00:00");
 		} catch (ParseException e) {
 		}
 	}
@@ -36,13 +35,14 @@ public class DateUtil {
 	public static String format(Date date) {
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date);
 	}
-	
+
 	public static String format(String pattern, Date date) {
 		return new SimpleDateFormat(pattern).format(date);
 	}
-	
+
 	/**
 	 * 取得下一个更新统计缓存时间，即明日0点
+	 * 
 	 * @return
 	 */
 	public static Date nextTaskTime() {
@@ -54,9 +54,10 @@ public class DateUtil {
 		calendar.add(Calendar.DATE, 1);
 		return calendar.getTime();
 	}
-	
+
 	/**
 	 * 取得当前月份
+	 * 
 	 * @return
 	 */
 	public static Date getCurrentMonth() {
@@ -68,9 +69,10 @@ public class DateUtil {
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		return calendar.getTime();
 	}
-	
+
 	/**
 	 * 取得当日0点
+	 * 
 	 * @return
 	 */
 	public static Date getCurrentDay() {
@@ -80,5 +82,22 @@ public class DateUtil {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar.getTime();
+	}
+
+	public static Date getPreDate(int date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) - date);
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		return calendar.getTime();
+	}
+	
+	public static void main(String[] args) {
+		Date preDate = getPreDate(0);
+		System.out.println(format(preDate));
+		preDate = getPreDate(-1);
+		System.out.println(format(preDate));
 	}
 }

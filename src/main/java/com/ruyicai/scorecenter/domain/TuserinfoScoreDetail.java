@@ -71,12 +71,15 @@ public class TuserinfoScoreDetail implements Serializable {
 		return detail;
 	}
 
-	public static Integer findCountByTime(String userno, Date date, Integer scoreType) {
+	public static Integer findCountByTime(String userno, Integer scoreType) {
 		EntityManager em = TuserinfoScoreDetail.entityManager();
-		String dateStr = DateUtil.format("yyyy-MM-dd", date);
-		String countSql = "SELECT count(*) FROM TuserinfoScoreDetail o WHERE date_format(o.createTime,'%Y-%m-%d') = ? AND o.scoreType = ? AND o.userno = ?";
-		TypedQuery<Long> total = em.createQuery(countSql, Long.class).setParameter(1, dateStr)
-				.setParameter(2, scoreType).setParameter(3, userno);
+		Date beforeDate = DateUtil.getPreDate(0);
+		Date afterDate = DateUtil.getPreDate(-1);
+		// String countSql =
+		// "SELECT count(*) FROM TuserinfoScoreDetail o WHERE date_format(o.createTime,'%Y-%m-%d') = ? AND o.scoreType = ? AND o.userno = ?";
+		String countSql = "SELECT count(*) FROM TuserinfoScoreDetail o WHERE (o.createTime between ? and ?) AND o.scoreType = ? AND o.userno = ?";
+		TypedQuery<Long> total = em.createQuery(countSql, Long.class).setParameter(1, beforeDate)
+				.setParameter(2, afterDate).setParameter(3, scoreType).setParameter(4, userno);
 		int count = total.getSingleResult().intValue();
 		return count;
 	}

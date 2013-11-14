@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{36}.%method - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="rollingFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>../logs/scorecenter.log</file>
+		<encoder>
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %-5level %logger{36}.%method - %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/scorecenter.%d{yyyy-MM-dd}.log</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+
+	<logger name="org.apache" level="ERROR" />
+	<logger name="org.hibernate.SQL" level="ERROR" />
+	<logger name="org.hibernate" level="ERROR" />
+	<logger name="org.springframework" level="ERROR" />
+	<logger name="net.sf" level="ERROR" />
+	
+	<logger name="jdbc.sqlonly" level="OFF" />
+	<logger name="jdbc.sqltiming" level="${log4jdbc.sqltiming}" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<logger name="jdbc.connection" level="OFF" />
+
+	<root level="INFO">
+		<appender-ref ref="rollingFile" />
+	</root>
+</configuration>
