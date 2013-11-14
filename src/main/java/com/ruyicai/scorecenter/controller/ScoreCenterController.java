@@ -267,5 +267,38 @@ public class ScoreCenterController {
 		}
 		return rd;
 	}
+	
+	/**
+	 * 如意彩竞猜扣除积分（检查是否有足够的积分）
+	 * @param userno	用户id
+	 * @param score		积分
+	 * @param quizId	精彩问题id
+	 * @return
+	 */
+	@RequestMapping(value = "/checkAndDeductScore")
+	public @ResponseBody ResponseData checkAndDeductScore(@RequestParam(value = "userno", required = false) String userno,
+			@RequestParam(value = "score", required = false) BigDecimal score,
+			@RequestParam(value = "quizId", required = false) Integer quizId) {
+		logger.info("/checkAndDeductScore userno:{} score:{} quizId:{}", new String[] {userno, score+"", quizId+""});
+		ResponseData rd = new ResponseData();
+		ErrorCode result = ErrorCode.OK;
+		try {
+			scoreService.quizDeductScore(userno, score, quizId);
+		} catch(IllegalArgumentException e) {
+			logger.error("checkAndDeductScore error", new String[] { e.getMessage() }, e);
+			result = ErrorCode.PARAMTER_ERROR;
+			rd.setValue(e.getMessage());
+		} catch (RuyicaiException e) {
+			logger.error("checkAndDeductScore error", new String[] { e.getMessage() }, e);
+			result = e.getErrorCode();
+			rd.setValue(e.getMessage());
+		} catch (Exception e) {
+			logger.error("checkAndDeductScore error", new String[] { e.getMessage() }, e);
+			result = ErrorCode.ERROR;
+			rd.setValue(e.getMessage());
+		}
+		rd.setErrorCode(result.value);
+		return rd;
+	}
 
 }

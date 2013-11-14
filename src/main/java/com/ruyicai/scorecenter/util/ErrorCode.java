@@ -113,7 +113,8 @@ public enum ErrorCode {
 	ScoreCenter_NOT_ENOUGH("1010001","积分不足"),
 	ScoreCenter_Tran2MoneyLotmulti_Error("1010002","积分兑换倍数错误"),
 	ScoreCenter_Tran2Money_DISABLE("1010003","积分兑换不可用"),
-	ScoreCenter_TYPE_DISABLE("1010004","无效的积分类型");
+	ScoreCenter_TYPE_DISABLE("1010004","无效的积分类型"),
+	ScoreCenter_QuizDeductScore_DISABLE("1010005", "如意彩竞猜扣除积分不可用");
 	public String value;
 	
 	public String memo;
