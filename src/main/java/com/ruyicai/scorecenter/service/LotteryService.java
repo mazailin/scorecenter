@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.fluent.Request;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,7 @@ public class LotteryService {
 		String url = lotteryurl + "/select/findUsernosByLotnoAndBatchcode?lotno=" + lotno + "&batchcode=" + batchcode
 				+ "&state=" + state;
 		try {
-			String result = HttpUtil.getResultMessage(url.toString());
+			String result = Request.Get(url).execute().returnContent().asString();
 			list = JsonUtil.fromJsonToObject(result, ArrayList.class);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,7 +89,7 @@ public class LotteryService {
 				return tuserinfo;
 			}
 			logger.info("find user from lottery,userno:" + userno);
-			String result = HttpUtil.getResultMessage(url.toString());
+			String result = Request.Get(url.toString()).execute().returnContent().asString();
 			if (StringUtils.isNotBlank(result)) {
 				JSONObject jsonObject = new JSONObject(result);
 				String errorCode = jsonObject.getString("errorCode");
@@ -164,7 +165,7 @@ public class LotteryService {
 		List<CaseLotBuy> resultList = new ArrayList<CaseLotBuy>();
 		String url = lotteryurl + "/select/selectCaseLotBuysWithOutPage?caselotid=" + caselotid + "&withOutUser=1";
 		try {
-			String result = HttpUtil.getResultMessage(url.toString());
+			String result = Request.Get(url).execute().returnContent().asString();
 			JSONObject jsonObject = new JSONObject(result);
 			String errorCode = jsonObject.getString("errorCode");
 			if (errorCode.equals(ErrorCode.OK.value)) {

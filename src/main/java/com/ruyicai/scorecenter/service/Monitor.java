@@ -14,7 +14,7 @@ public class Monitor {
 
 	private static long TIMEOUT = 5000l;
 
-	@Pointcut(value = "execution(* com.ruyicai.scorecenter.controller.ScoreCenterController.*(..))")
+	@Pointcut(value = "execution(* com.ruyicai.scorecenter.service.LotteryService.*(..))")
 	public void businessMethods() {
 	}
 

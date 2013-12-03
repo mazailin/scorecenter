@@ -68,19 +68,6 @@ public class ScoreService {
 		Integer times = type.getTimes();
 		if (type != null && type.getState() == 1) {
 			if (times != null) {
-				/*
-				 * if (times == 1) { boolean exist =
-				 * tjmsserviceService.createTjmsservice( userno +
-				 * DateUtil.format("yyyyMMdd", new Date()), scoreType + "",
-				 * type.getMemo()); if (exist) {
-				 * logger.info("用户userno:{}已参加{}不再增加积分", new String[] { userno,
-				 * type.getMemo() }); return flag; } } else { Integer count =
-				 * TuserinfoScoreDetail.findCountByTime(userno, new Date(),
-				 * scoreType); logger.info("积分增加次数count:" + count + ",userno:" +
-				 * userno); if (times <= count) {
-				 * logger.info("用户userno:{}参加{}已达到{}次不再增加积分", new String[] {
-				 * userno, type.getMemo(), count + "" }); return flag; } }
-				 */
 				Integer count = TuserinfoScoreDetail.findCountByTime(userno, scoreType);
 				logger.info("积分增加次数count:" + count + ",userno:" + userno);
 				if (times <= count) {
@@ -89,10 +76,6 @@ public class ScoreService {
 				}
 			}
 			if (scoreType == 1) {
-				/*
-				 * boolean exist = tjmsserviceService .createTjmsservice(userno
-				 * + scoreType, scoreType + "", type.getMemo()); if (exist) {
-				 */
 				Integer count = TuserinfoScoreDetail.findCount(userno, scoreType);
 				if (count > 0) {
 					logger.info("用户userno:{}已参加{}不再增加积分", new String[] { userno, type.getMemo() });
