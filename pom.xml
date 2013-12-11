@@ -8,6 +8,8 @@
 	<version>0.1.0.BUILD-SNAPSHOT</version>
 	<name>scorecenter</name>
 	<properties>
+		<camel.version>2.12.2</camel.version>
+		<camel.jmxAgent.registryPort>2097</camel.jmxAgent.registryPort>
 		<roo.version>1.1.5.RELEASE</roo.version>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<aspectj.version>1.6.11</aspectj.version>
@@ -24,14 +26,14 @@
 		<repository>
 			<id>ruyicai</id>
 			<name>Ruyicai Repository</name>
-			<url>http://202.43.152.162:8181/nexus/content/repositories/public/</url>
+			<url>http://www.g3cai.cn/nexus/content/repositories/public/</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>ruyicai</id>
 			<name>Ruyicai Repository</name>
-			<url>http://202.43.152.162:8181/nexus/content/repositories/public/</url>
+			<url>http://www.g3cai.cn/nexus/content/repositories/public/</url>
 		</pluginRepository>
 	</pluginRepositories>
 	<dependencies>
@@ -412,17 +414,17 @@
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring</artifactId>
-			<version>2.8.1</version>
+			<version>${camel.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-jms</artifactId>
-			<version>2.8.1</version>
+			<version>${camel.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.camel</groupId>
 			<artifactId>camel-spring-javaconfig</artifactId>
-			<version>2.8.1</version>
+			<version>${camel.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -749,7 +751,6 @@
 				<tomcat.manager.port>9080</tomcat.manager.port>
 				<jms.new-issue.brokerURL>tcp://192.168.0.92:61616</jms.new-issue.brokerURL>
 				<ruyicaiUserno>00000059</ruyicaiUserno>
-				<camel.jmxAgent.registryPort>2099</camel.jmxAgent.registryPort>
 				<memcache.client.ip>192.168.0.92:12000</memcache.client.ip>
 				<lotteryurl>http://192.168.0.42:8080/lottery</lotteryurl>
 			</properties>
@@ -768,7 +769,6 @@
 				<tomcat.manager.port>9080</tomcat.manager.port>
 				<jms.new-issue.brokerURL>tcp://localhost:61616</jms.new-issue.brokerURL>
 				<ruyicaiUserno>00000059</ruyicaiUserno>
-				<camel.jmxAgent.registryPort>2099</camel.jmxAgent.registryPort>
 				<memcache.client.ip>192.168.0.92:12000</memcache.client.ip>
 				<lotteryurl>http://192.168.0.42:8080/lottery</lotteryurl>
 				<log4jdbc.sqltiming>INFO</log4jdbc.sqltiming>
@@ -785,7 +785,6 @@
 				<tomcat.manager.port>9080</tomcat.manager.port>
 				<jms.new-issue.brokerURL>tcp://192.168.0.92:61616</jms.new-issue.brokerURL>
 				<ruyicaiUserno>00000059</ruyicaiUserno>
-				<camel.jmxAgent.registryPort>2099</camel.jmxAgent.registryPort>
 				<memcache.client.ip>192.168.0.92:12000</memcache.client.ip>
 				<lotteryurl>http://192.168.0.42:8080/lottery</lotteryurl>
 				<log4jdbc.sqltiming>INFO</log4jdbc.sqltiming>
@@ -803,26 +802,8 @@
 				<maven.test.skip>true</maven.test.skip>
 				<jms.new-issue.brokerURL>failover://(tcp://192.168.99.30:61616,tcp://192.168.99.31:61616)?randomize=false</jms.new-issue.brokerURL>
 				<ruyicaiUserno>00808738</ruyicaiUserno>
-				<camel.jmxAgent.registryPort>2099</camel.jmxAgent.registryPort>
 				<memcache.client.ip>192.168.99.30:12000,192.168.99.31:12000</memcache.client.ip>
 				<lotteryurl>http://192.168.99.6/lotteryprize</lotteryurl>
-			</properties>
-		</profile>
-		<profile>
-			<id>product</id>
-			<properties>
-				<database.url>jdbc:mysql://192.168.102.2:3306/scorecenter</database.url>
-				<database.driverClassName>com.mysql.jdbc.Driver</database.driverClassName>
-				<database.username>jrtConsole</database.username>
-				<database.password>jrtConsole</database.password>
-				<tomcat.manager.url>http://192.168.102.100:8888/manager</tomcat.manager.url>
-				<tomcat.manager.port>9080</tomcat.manager.port>
-				<maven.test.skip>true</maven.test.skip>
-				<jms.new-issue.brokerURL>failover://(tcp://192.168.102.100:61616,tcp://192.168.102.109:61616)?randomize=false</jms.new-issue.brokerURL>
-				<ruyicaiUserno>00808738</ruyicaiUserno>
-				<camel.jmxAgent.registryPort>2099</camel.jmxAgent.registryPort>
-				<memcache.client.ip>192.168.102.109:12000,192.168.102.108:12000</memcache.client.ip>
-				<lotteryurl>http://192.168.102.100/lottery</lotteryurl>
 			</properties>
 		</profile>
 	</profiles>
