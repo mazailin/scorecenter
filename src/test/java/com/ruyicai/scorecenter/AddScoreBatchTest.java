@@ -3,13 +3,8 @@ package com.ruyicai.scorecenter;
 import java.math.BigDecimal;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ruyicai.benchmark.BenchmarkTask;
 import com.ruyicai.benchmark.ConcurrentBenchmark;
@@ -27,6 +22,7 @@ public class AddScoreBatchTest extends ConcurrentBenchmark {
 
 	SpringUtils springUtils;
 
+	@SuppressWarnings("static-access")
 	@Override
 	protected void setUp() {
 		ApplicationContext applicationContext = new FileSystemXmlApplicationContext(

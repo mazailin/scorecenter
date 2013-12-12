@@ -29,11 +29,8 @@ public class Torder {
 	private BigDecimal prizestate;
 
 	private BigDecimal orderprizeamt;
-	
+
 	private BigDecimal orderpreprizeamt;
-	
-	/** @deprecated	是否有战绩	0：没有，1：有	*/
-	private BigDecimal hasachievement;
 
 	private String winbasecode;
 
@@ -56,44 +53,38 @@ public class Torder {
 	private BigDecimal betnum;
 
 	private Date canceltime;
-	
+
 	private Date endtime;
-	
+
 	private String desc;
-	
+
 	private String betcode;
-	
+
 	private BigDecimal alreadytrans;
-	
+
 	private BigDecimal lotmulti;
-	
+
 	private String prizeinfo;
-	
+
 	private String orderinfo;
-	
+
 	private String body;
-	
+
 	private BigDecimal instate;
-	
+
 	private BigDecimal paystate;
-	
+
 	/** 方案类型 */
 	private BigDecimal lotsType;
-	
+
 	private Date encashtime;
-	
+
 	private String eventcode;
-	
+
 	private String agencyno;
-	
+
 	private String channel;
-	
+
 	private String subchannel;
-	
-	private transient BigDecimal orderamt;
-	
-	private transient Date modifytime;
-	
-	private transient BigDecimal orderprize;
-	
+
 }
