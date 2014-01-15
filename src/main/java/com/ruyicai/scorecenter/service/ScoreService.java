@@ -249,6 +249,11 @@ public class ScoreService {
 				addScore = giveScore;
 			}
 			break;
+		case 11:// 幸运抽奖
+			if (giveScore != null) {
+				addScore = giveScore;
+			}
+			break;
 		case 99:// 赠送积分
 			if (giveScore != null) {
 				addScore = giveScore;
@@ -284,6 +289,45 @@ public class ScoreService {
 			TuserinfoScore deductScore = tuserinfoScoreDao.deductScore(userno, score);
 			TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, quizId+"", score, -2,
 					deductScore.getScore(), "");
+		} else {
+			if (type != null) {
+				if (type.getState() != 1) {
+					logger.error("兑换积分未开启userno:{},score:{}", new String[] { userno, score + "" });
+					throw new RuyicaiException(ErrorCode.ScoreCenter_QuizDeductScore_DISABLE);
+				}
+			} else {
+				logger.error("无效积分类型userno:{},score:{}", new String[] { userno, score + "" });
+				throw new RuyicaiException(ErrorCode.ScoreCenter_TYPE_DISABLE);
+			}
+		}
+	}
+	
+	/**
+	 * 抽奖活动检查并且扣除积分
+	 * @param userno			用户id
+	 * @param score				小号积分
+	 * @param businessId		业务id
+	 * @param memo			备忘
+	 */
+	public void luckyDrawDeductScore(String userno, BigDecimal score, String businessId, String memo) {
+		if(StringUtils.isBlank(userno)) {
+			throw new IllegalArgumentException("The argument userno is required");
+		}
+		if(score == null) {
+			throw new IllegalArgumentException("The argument score is required.");
+		}
+		if(businessId == null) {
+			throw new IllegalArgumentException("The argument businessId is required.");
+		}
+		ScoreType type = ScoreType.findScoreTypeFromCache(-3);
+		if(type != null && type.getState().equals(1)) {
+			Tuserinfo tuserinfo = lotteryService.findTuserinfoByUserno(userno);
+			if (tuserinfo == null) {
+				throw new RuyicaiException(ErrorCode.UserMod_UserNotExists);
+			}
+			TuserinfoScore deductScore = tuserinfoScoreDao.deductScore(userno, score);
+			TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, businessId, score, -3,
+					deductScore.getScore(), memo);
 		} else {
 			if (type != null) {
 				if (type.getState() != 1) {

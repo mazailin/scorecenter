@@ -300,5 +300,40 @@ public class ScoreCenterController {
 		rd.setErrorCode(result.value);
 		return rd;
 	}
+	
+	/**
+	 * 幸运抽奖扣除积分（检查是否有足够的积分）
+	 * @param userno	用户id
+	 * @param score		积分
+	 * @param businessId	业务id
+	 * @param memo		备忘
+	 * @return
+	 */
+	@RequestMapping(value = "/luckyDrawDeductScore")
+	public @ResponseBody ResponseData luckyDrawDeductScore(@RequestParam(value = "userno", required = false) String userno,
+			@RequestParam(value = "score", required = false) BigDecimal score,
+			@RequestParam(value = "businessId", required = false) String businessId,
+			@RequestParam(value = "memo", required = false) String memo) {
+		logger.info("/luckyDrawDeductScore userno:{} score:{} quizId:{} memo:{}", new String[] {userno, score+"", businessId, memo});
+		ResponseData rd = new ResponseData();
+		ErrorCode result = ErrorCode.OK;
+		try {
+			scoreService.luckyDrawDeductScore(userno, score, businessId, memo);
+		} catch(IllegalArgumentException e) {
+			logger.error("luckyDrawDeductScore error", new String[] { e.getMessage() }, e);
+			result = ErrorCode.PARAMTER_ERROR;
+			rd.setValue(e.getMessage());
+		} catch (RuyicaiException e) {
+			logger.error("luckyDrawDeductScore error", new String[] { e.getMessage() }, e);
+			result = e.getErrorCode();
+			rd.setValue(e.getMessage());
+		} catch (Exception e) {
+			logger.error("luckyDrawDeductScore error", new String[] { e.getMessage() }, e);
+			result = ErrorCode.ERROR;
+			rd.setValue(e.getMessage());
+		}
+		rd.setErrorCode(result.value);
+		return rd;
+	}
 
 }
