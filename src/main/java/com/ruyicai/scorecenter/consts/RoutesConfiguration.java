@@ -32,6 +32,8 @@ public class RoutesConfiguration {
 						"bean:fundJmsListener?method=fundJmsCustomer").routeId("用户充值计算积分");*/
 				from("jms:queue:VirtualTopicConsumers.scorecenter.quizAward?concurrentConsumers=10").to(
 						"bean:quizAwardListener?method=quizAwardConsumer").routeId("如意彩竞猜奖励积分");
+				from("jms:queue:VirtualTopicConsumers.scorecenter.chargescore?concurrentConsumers=10").to(
+						"bean:chargescoreListener?method=chargescoreConsumer").routeId("如意彩竞猜奖励积分");
 				from("jms:queue:VirtualTopicConsumers.scorecenter.luckyDrawAward?concurrentConsumers=10").to(
 						"bean:luckyDrawAwardListener?method=luckyDrawAwardConsumer").routeId("幸运抽奖奖励积分");
 			}

@@ -254,6 +254,11 @@ public class ScoreService {
 				addScore = giveScore;
 			}
 			break;
+		case 12:// 购买积分
+			if (giveScore != null) {
+				addScore = giveScore;
+			}
+			break;
 		case 99:// 赠送积分
 			if (giveScore != null) {
 				addScore = giveScore;
