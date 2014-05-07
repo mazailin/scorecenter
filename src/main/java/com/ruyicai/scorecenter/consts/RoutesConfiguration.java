@@ -28,8 +28,6 @@ public class RoutesConfiguration {
 						"bean:orderAfterBetListener?method=orderAfterBetCustomer").routeId("订单投注成功计算积分");
 				from("jms:queue:VirtualTopicConsumers.scorecenter.caselotFinish").to(
 						"bean:caselotFinishListener?method=caselotFinishCustomer").routeId("合买期截计算积分");
-				/*from("jms:queue:VirtualTopicConsumers.scorecenter.actioncenter").to(
-						"bean:fundJmsListener?method=fundJmsCustomer").routeId("用户充值计算积分");*/
 				from("jms:queue:VirtualTopicConsumers.scorecenter.quizAward?concurrentConsumers=10").to(
 						"bean:quizAwardListener?method=quizAwardConsumer").routeId("如意彩竞猜奖励积分");
 				from("jms:queue:VirtualTopicConsumers.scorecenter.chargescore?concurrentConsumers=10").to(
