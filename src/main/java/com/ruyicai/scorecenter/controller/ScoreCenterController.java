@@ -267,24 +267,27 @@ public class ScoreCenterController {
 		}
 		return rd;
 	}
-	
+
 	/**
 	 * 如意彩竞猜扣除积分（检查是否有足够的积分）
-	 * @param userno	用户id
-	 * @param score		积分
-	 * @param quizId	精彩问题id
+	 * 
+	 * @param userno 用户id
+	 * @param score 积分
+	 * @param quizId 精彩问题id
 	 * @return
 	 */
 	@RequestMapping(value = "/checkAndDeductScore")
-	public @ResponseBody ResponseData checkAndDeductScore(@RequestParam(value = "userno", required = false) String userno,
+	public @ResponseBody
+	ResponseData checkAndDeductScore(@RequestParam(value = "userno", required = false) String userno,
 			@RequestParam(value = "score", required = false) BigDecimal score,
 			@RequestParam(value = "quizId", required = false) Integer quizId) {
-		logger.info("/checkAndDeductScore userno:{} score:{} quizId:{}", new String[] {userno, score+"", quizId+""});
+		logger.info("/checkAndDeductScore userno:{} score:{} quizId:{}",
+				new String[] { userno, score + "", quizId + "" });
 		ResponseData rd = new ResponseData();
 		ErrorCode result = ErrorCode.OK;
 		try {
 			scoreService.quizDeductScore(userno, score, quizId);
-		} catch(IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			logger.error("checkAndDeductScore error", new String[] { e.getMessage() }, e);
 			result = ErrorCode.PARAMTER_ERROR;
 			rd.setValue(e.getMessage());
@@ -300,35 +303,40 @@ public class ScoreCenterController {
 		rd.setErrorCode(result.value);
 		return rd;
 	}
-	
+
 	/**
-	 * 幸运抽奖扣除积分（检查是否有足够的积分）
-	 * @param userno	用户id
-	 * @param score		积分
-	 * @param businessId	业务id
-	 * @param memo		备忘
+	 * 扣除积分（检查是否有足够的积分）
+	 * 
+	 * @param userno 用户id
+	 * @param score 积分
+	 * @param businessId 业务id
+	 * @param memo 备忘
+	 * @param scoreType 扣除积分类型
 	 * @return
 	 */
-	@RequestMapping(value = "/luckyDrawDeductScore")
-	public @ResponseBody ResponseData luckyDrawDeductScore(@RequestParam(value = "userno", required = false) String userno,
+	@RequestMapping(value = "/deductScore")
+	public @ResponseBody
+	ResponseData deductScore(@RequestParam(value = "userno", required = false) String userno,
 			@RequestParam(value = "score", required = false) BigDecimal score,
 			@RequestParam(value = "businessId", required = false) String businessId,
-			@RequestParam(value = "memo", required = false) String memo) {
-		logger.info("/luckyDrawDeductScore userno:{} score:{} quizId:{} memo:{}", new String[] {userno, score+"", businessId, memo});
+			@RequestParam(value = "memo", required = false) String memo,
+			@RequestParam(value = "scoreType", required = false) Integer scoreType) {
+		logger.info("/deductScore userno:{} score:{} quizId:{} memo:{} scoreType", new String[] { userno,
+				score + "", businessId, memo, scoreType + "" });
 		ResponseData rd = new ResponseData();
 		ErrorCode result = ErrorCode.OK;
 		try {
-			scoreService.luckyDrawDeductScore(userno, score, businessId, memo);
-		} catch(IllegalArgumentException e) {
-			logger.error("luckyDrawDeductScore error", new String[] { e.getMessage() }, e);
+			scoreService.deductScore(userno, score, businessId, memo, scoreType);
+		} catch (IllegalArgumentException e) {
+			logger.error("deductScore error", new String[] { e.getMessage() }, e);
 			result = ErrorCode.PARAMTER_ERROR;
 			rd.setValue(e.getMessage());
 		} catch (RuyicaiException e) {
-			logger.error("luckyDrawDeductScore error", new String[] { e.getMessage() }, e);
+			logger.error("deductScore error", new String[] { e.getMessage() }, e);
 			result = e.getErrorCode();
 			rd.setValue(e.getMessage());
 		} catch (Exception e) {
-			logger.error("luckyDrawDeductScore error", new String[] { e.getMessage() }, e);
+			logger.error("deductScore error", new String[] { e.getMessage() }, e);
 			result = ErrorCode.ERROR;
 			rd.setValue(e.getMessage());
 		}

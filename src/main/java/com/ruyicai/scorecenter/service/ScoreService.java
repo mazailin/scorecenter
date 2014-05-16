@@ -268,32 +268,32 @@ public class ScoreService {
 		logger.info("计算积分结果:" + addScore);
 		return addScore;
 	}
-	
+
 	/**
 	 * 如意彩竞猜扣积分
+	 * 
 	 * @param userno
 	 * @param score
 	 * @param quizId
 	 */
 	public void quizDeductScore(String userno, BigDecimal score, Integer quizId) {
-		if(StringUtils.isBlank(userno)) {
+		if (StringUtils.isBlank(userno)) {
 			throw new IllegalArgumentException("The argument userno is required");
 		}
-		if(score == null) {
+		if (score == null) {
 			throw new IllegalArgumentException("The argument score is required.");
 		}
-		if(quizId == null) {
+		if (quizId == null) {
 			throw new IllegalArgumentException("The argument quizId is required.");
 		}
 		ScoreType type = ScoreType.findScoreTypeFromCache(-2);
-		if(type != null && type.getState().equals(1)) {
+		if (type != null && type.getState().equals(1)) {
 			Tuserinfo tuserinfo = lotteryService.findTuserinfoByUserno(userno);
 			if (tuserinfo == null) {
 				throw new RuyicaiException(ErrorCode.UserMod_UserNotExists);
 			}
 			TuserinfoScore deductScore = tuserinfoScoreDao.deductScore(userno, score);
-			TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, quizId+"", score, -2,
-					deductScore.getScore(), "");
+			TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, quizId + "", score, -2, deductScore.getScore(), "");
 		} else {
 			if (type != null) {
 				if (type.getState() != 1) {
@@ -306,33 +306,39 @@ public class ScoreService {
 			}
 		}
 	}
-	
+
 	/**
-	 * 抽奖活动检查并且扣除积分
-	 * @param userno			用户id
-	 * @param score				小号积分
-	 * @param businessId		业务id
-	 * @param memo			备忘
+	 * 扣除积分
+	 * 
+	 * @param userno 用户id
+	 * @param score 小号积分
+	 * @param businessId 业务id
+	 * @param memo 备忘
+	 * @param scoreType 积分类型
+	 * @param 积分类型 备忘
 	 */
-	public void luckyDrawDeductScore(String userno, BigDecimal score, String businessId, String memo) {
-		if(StringUtils.isBlank(userno)) {
+	public void deductScore(String userno, BigDecimal score, String businessId, String memo, Integer scoreType) {
+		if (StringUtils.isBlank(userno)) {
 			throw new IllegalArgumentException("The argument userno is required");
 		}
-		if(score == null) {
+		if (score == null) {
 			throw new IllegalArgumentException("The argument score is required.");
 		}
-		if(businessId == null) {
+		if (businessId == null) {
 			throw new IllegalArgumentException("The argument businessId is required.");
 		}
-		ScoreType type = ScoreType.findScoreTypeFromCache(-3);
-		if(type != null && type.getState().equals(1)) {
+		if (scoreType == null) {
+			throw new IllegalArgumentException("The argument scoreType is required.");
+		}
+		ScoreType type = ScoreType.findScoreTypeFromCache(scoreType);
+		if (type != null && type.getState().equals(1)) {
 			Tuserinfo tuserinfo = lotteryService.findTuserinfoByUserno(userno);
 			if (tuserinfo == null) {
 				throw new RuyicaiException(ErrorCode.UserMod_UserNotExists);
 			}
 			TuserinfoScore deductScore = tuserinfoScoreDao.deductScore(userno, score);
-			TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, businessId, score, -3,
-					deductScore.getScore(), memo);
+			TuserinfoScoreDetail
+					.createTuserinfoScoreDetail(userno, businessId, score, -3, deductScore.getScore(), memo);
 		} else {
 			if (type != null) {
 				if (type.getState() != 1) {
