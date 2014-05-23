@@ -57,13 +57,6 @@ public class ScoreService {
 		logger.info("增加用户积分userno:{},bussinessId:{},scoreType:{},buyAmt:{},totalAmt:{},giveScore:{}", new String[] {
 				userno, bussinessId, scoreType + "", buyAmt + "", totalAmt + "", giveScore + "" });
 		Boolean flag = false;
-		Tuserinfo tuserinfo = lotteryService.findTuserinfoByUserno(userno);
-		if (tuserinfo != null && tuserinfo.getChannel() != null) {
-			if (tuserinfo.getChannel().equals("991")) {
-				logger.info("如意彩大户渠道不增加积分userno:" + userno);
-				return flag;
-			}
-		}
 		ScoreType type = ScoreType.findScoreTypeFromCache(scoreType);
 		Integer times = type.getTimes();
 		if (type != null && type.getState() == 1) {
