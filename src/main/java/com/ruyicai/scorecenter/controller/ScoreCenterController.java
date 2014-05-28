@@ -321,7 +321,7 @@ public class ScoreCenterController {
 			@RequestParam(value = "businessId", required = false) String businessId,
 			@RequestParam(value = "memo", required = false) String memo,
 			@RequestParam(value = "scoreType", required = false) Integer scoreType) {
-		logger.info("/deductScore userno:{} score:{} quizId:{} memo:{} scoreType", new String[] { userno,
+		logger.info("/deductScore userno:{} score:{} quizId:{} memo:{} scoreType:{}", new String[] { userno,
 				score + "", businessId, memo, scoreType + "" });
 		ResponseData rd = new ResponseData();
 		ErrorCode result = ErrorCode.OK;

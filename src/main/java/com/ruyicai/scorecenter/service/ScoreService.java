@@ -330,8 +330,8 @@ public class ScoreService {
 				throw new RuyicaiException(ErrorCode.UserMod_UserNotExists);
 			}
 			TuserinfoScore deductScore = tuserinfoScoreDao.deductScore(userno, score);
-			TuserinfoScoreDetail
-					.createTuserinfoScoreDetail(userno, businessId, score, -3, deductScore.getScore(), memo);
+			TuserinfoScoreDetail.createTuserinfoScoreDetail(userno, businessId, score, scoreType,
+					deductScore.getScore(), memo);
 		} else {
 			if (type != null) {
 				if (type.getState() != 1) {
