@@ -41,6 +41,14 @@ privileged aspect ScoreType_Roo_JavaBean {
         this.times = times;
     }
     
+    public Integer ScoreType.getNum() {
+        return this.num;
+    }
+    
+    public void ScoreType.setNum(Integer num) {
+        this.num = num;
+    }
+    
     public Integer ScoreType.getState() {
         return this.state;
     }

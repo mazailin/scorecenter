@@ -43,6 +43,9 @@ public class ScoreType implements Serializable {
 	@Column(name = "TIMES")
 	private Integer times;
 
+	@Column(name = "NUM")
+	private Integer num;
+
 	@Column(name = "STATE")
 	private Integer state;
 
@@ -54,7 +57,7 @@ public class ScoreType implements Serializable {
 
 	@Transactional
 	public static ScoreType saveOrUpdateScoreType(Integer scoreType, String memo, Integer times, Integer state,
-			String scoreJson) {
+			String scoreJson, Integer num) {
 		ScoreType type = ScoreType.findScoreType(scoreType);
 		if (type != null) {
 			type.setMemo(memo);
@@ -62,6 +65,7 @@ public class ScoreType implements Serializable {
 			type.setState(state);
 			type.setModifyTime(new Date());
 			type.setScoreJson(scoreJson);
+			type.setNum(num);
 			type.merge();
 		} else {
 			type = new ScoreType();
@@ -71,6 +75,7 @@ public class ScoreType implements Serializable {
 			type.setState(state);
 			type.setModifyTime(new Date());
 			type.setScoreJson(scoreJson);
+			type.setNum(num);
 			type.persist();
 		}
 		if (type != null) {

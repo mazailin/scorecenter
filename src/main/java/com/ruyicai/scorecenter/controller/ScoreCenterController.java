@@ -208,11 +208,11 @@ public class ScoreCenterController {
 	public @ResponseBody
 	ResponseData saveOrUpdateScoreType(@RequestParam("scoreType") Integer scoreType, @RequestParam("memo") String memo,
 			@RequestParam(value = "times", required = false) Integer times, @RequestParam("state") Integer state,
-			@RequestParam("scoreJson") String scoreJson) {
+			@RequestParam("scoreJson") String scoreJson, @RequestParam(value = "num", required = false) Integer num) {
 		ResponseData rd = new ResponseData();
 		ErrorCode result = ErrorCode.OK;
 		try {
-			ScoreType type = ScoreType.saveOrUpdateScoreType(scoreType, memo, times, state, scoreJson);
+			ScoreType type = ScoreType.saveOrUpdateScoreType(scoreType, memo, times, state, scoreJson, num);
 			rd.setValue(type);
 		} catch (RuyicaiException e) {
 			logger.error("创建或更新积分类型异常,scoreType:{}", new String[] { scoreType + "" }, e);

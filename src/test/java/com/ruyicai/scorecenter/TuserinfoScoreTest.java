@@ -43,19 +43,19 @@ public class TuserinfoScoreTest {
 	public void testCreateScoreType() {
 		Map<String, String> mapfu1 = new LinkedHashMap<String, String>();
 		mapfu1.put("base", "500");
-		ScoreType.saveOrUpdateScoreType(-1, "兑换积分", null, 1, JsonUtil.toJson(mapfu1));
+		ScoreType.saveOrUpdateScoreType(-1, "兑换积分", null, 1, JsonUtil.toJson(mapfu1), null);
 
 		Map<String, String> map1 = new LinkedHashMap<String, String>();
 		map1.put("base", "20");
-		ScoreType.saveOrUpdateScoreType(1, "注册并完善信息", 1, 1, JsonUtil.toJson(map1));
+		ScoreType.saveOrUpdateScoreType(1, "注册并完善信息", 1, 1, JsonUtil.toJson(map1), 1);
 
 		Map<String, String> map2 = new LinkedHashMap<String, String>();
 		map2.put("base", "5");
-		ScoreType.saveOrUpdateScoreType(2, "普通投注", null, 1, JsonUtil.toJson(map2));
+		ScoreType.saveOrUpdateScoreType(2, "普通投注", null, 1, JsonUtil.toJson(map2), null);
 
 		Map<String, String> map3 = new LinkedHashMap<String, String>();
 		map3.put("base", "6");
-		ScoreType.saveOrUpdateScoreType(3, "追号", null, 1, JsonUtil.toJson(map3));
+		ScoreType.saveOrUpdateScoreType(3, "追号", null, 1, JsonUtil.toJson(map3), null);
 
 		Map<String, String> map4 = new LinkedHashMap<String, String>();
 		map4.put("step1max", "10");
@@ -65,29 +65,29 @@ public class TuserinfoScoreTest {
 		map4.put("step3max", "500");
 		map4.put("step3base", "30");
 		map4.put("step4base", "50");
-		ScoreType.saveOrUpdateScoreType(4, "发起合买", null, 1, JsonUtil.toJson(map4));
+		ScoreType.saveOrUpdateScoreType(4, "发起合买", null, 1, JsonUtil.toJson(map4), null);
 
 		Map<String, String> map5 = new LinkedHashMap<String, String>();
 		map5.put("base", "6");
-		ScoreType.saveOrUpdateScoreType(5, "参与合买", null, 1, JsonUtil.toJson(map5));
+		ScoreType.saveOrUpdateScoreType(5, "参与合买", null, 1, JsonUtil.toJson(map5), null);
 
 		Map<String, String> map6 = new LinkedHashMap<String, String>();
 		map6.put("base", "2");
-		ScoreType.saveOrUpdateScoreType(6, "充值", null, 1, JsonUtil.toJson(map6));
+		ScoreType.saveOrUpdateScoreType(6, "充值", null, 1, JsonUtil.toJson(map6), null);
 
 		Map<String, String> map7 = new LinkedHashMap<String, String>();
 		map7.put("base", "3");
-		ScoreType.saveOrUpdateScoreType(7, "留言建议", 3, 1, JsonUtil.toJson(map7));
+		ScoreType.saveOrUpdateScoreType(7, "留言建议", 3, 1, JsonUtil.toJson(map7), null);
 
 		Map<String, String> map8 = new LinkedHashMap<String, String>();
 		map8.put("base", "2");
-		ScoreType.saveOrUpdateScoreType(8, "用户登录", 1, 1, JsonUtil.toJson(map8));
+		ScoreType.saveOrUpdateScoreType(8, "用户登录", 1, 1, JsonUtil.toJson(map8), null);
 
 		Map<String, String> map9 = new LinkedHashMap<String, String>();
 		map9.put("base", "5");
-		ScoreType.saveOrUpdateScoreType(9, "推广分享", 10, 1, JsonUtil.toJson(map9));
+		ScoreType.saveOrUpdateScoreType(9, "推广分享", 10, 1, JsonUtil.toJson(map9), null);
 
-		ScoreType.saveOrUpdateScoreType(99, "赠送积分", null, 1, null);
+		ScoreType.saveOrUpdateScoreType(99, "赠送积分", null, 1, null, null);
 
 		List<ScoreType> list = ScoreType.findAllScoreTypes();
 		for (ScoreType type : list) {
@@ -151,7 +151,7 @@ public class TuserinfoScoreTest {
 		mapfu1.put("base", "500");
 		mapfu1.put("base1", "500");
 		mapfu1.put("base2", "1000");
-		ScoreType.saveOrUpdateScoreType(-1, "兑换积分", null, 1, JsonUtil.toJson(mapfu1));
+		ScoreType.saveOrUpdateScoreType(-1, "兑换积分", null, 1, JsonUtil.toJson(mapfu1), null);
 	}
 
 }

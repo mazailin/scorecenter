@@ -68,9 +68,10 @@ public class ScoreService {
 					return flag;
 				}
 			}
-			if (scoreType == 1) {
+			if (type.getNum() != null) {
+				Integer num = type.getNum();
 				Integer count = TuserinfoScoreDetail.findCount(userno, scoreType);
-				if (count > 0) {
+				if (count >= num) {
 					logger.info("用户userno:{}已参加{}不再增加积分", new String[] { userno, type.getMemo() });
 					return flag;
 				}
@@ -248,6 +249,11 @@ public class ScoreService {
 			}
 			break;
 		case 12:// 购买积分
+			if (giveScore != null) {
+				addScore = giveScore;
+			}
+			break;
+		case 13:// 赠送积分。只送一次
 			if (giveScore != null) {
 				addScore = giveScore;
 			}

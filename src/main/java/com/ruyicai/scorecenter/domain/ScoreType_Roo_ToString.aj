@@ -11,6 +11,7 @@ privileged aspect ScoreType_Roo_ToString {
         StringBuilder sb = new StringBuilder();
         sb.append("Memo: ").append(getMemo()).append(", ");
         sb.append("ModifyTime: ").append(getModifyTime()).append(", ");
+        sb.append("Num: ").append(getNum()).append(", ");
         sb.append("ScoreJson: ").append(getScoreJson()).append(", ");
         sb.append("ScoreType: ").append(getScoreType()).append(", ");
         sb.append("State: ").append(getState()).append(", ");
