@@ -85,11 +85,11 @@ public class TuserinfoScoreDao {
 		if (tuserinfoScore == null) {
 			throw new RuyicaiException(ErrorCode.ScoreCenter_NOT_ENOUGH);
 		}
+		if (deductScore.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new IllegalArgumentException("The argument deductScore less than zero");
+		}
 		if (tuserinfoScore.getScore().compareTo(deductScore) < 0) {
 			throw new RuyicaiException(ErrorCode.ScoreCenter_NOT_ENOUGH);
-		}
-		if (score.compareTo(BigDecimal.ZERO) <= 0) {
-			throw new IllegalArgumentException("The argument deductScore less than zero");
 		}
 		tuserinfoScore.setScore(tuserinfoScore.getScore().subtract(deductScore));
 		tuserinfoScore.setLastModifyTime(new Date());
