@@ -30,6 +30,9 @@ public class ScoreService {
 
 	@Autowired
 	private TuserinfoScoreDao tuserinfoScoreDao;
+	
+	@Autowired
+	AsyncService asyncService;
 
 	/*
 	 * @Autowired private TjmsserviceService tjmsserviceService;
@@ -143,6 +146,8 @@ public class ScoreService {
 					TransScoreDTO dto = new TransScoreDTO();
 					dto.setMoney(money);
 					dto.setTuserinfoScore(deductScore);
+					//积分兑换彩金超过5000元的发送短信
+					asyncService.sendMessage(userno,score);
 					return dto;
 				}
 			}
