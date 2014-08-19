@@ -279,7 +279,7 @@ public class ScoreService {
 		if (StringUtils.isBlank(userno)) {
 			throw new IllegalArgumentException("The argument userno is required");
 		}
-		if (score == null) {
+		if (score == null || score.compareTo(BigDecimal.ZERO) <= 0) {
 			throw new IllegalArgumentException("The argument score is required.");
 		}
 		if (quizId == null) {

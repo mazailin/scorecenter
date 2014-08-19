@@ -81,6 +81,9 @@ public class TuserinfoScoreDao {
 
 	@Transactional
 	public TuserinfoScore deductScore(String userno, BigDecimal deductScore) {
+		if (deductScore.compareTo(BigDecimal.ZERO) <= 0) {
+			throw new RuyicaiException(ErrorCode.PARAMTER_ERROR);
+		}
 		TuserinfoScore tuserinfoScore = findTuserinfoScore(userno, true);
 		if (tuserinfoScore == null) {
 			throw new RuyicaiException(ErrorCode.ScoreCenter_NOT_ENOUGH);
